@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 import streamlit as st
 import numpy as np
 
-API_KEY = 'ISFQL7OJCVVEX6GC'  # Alpha Vantage API Key
+API_KEY = 'ISFQL7OJCVVEX6GC'  # My Alpha Vantage API Key
 
 def fetch_stock_data(symbol):
     url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=1min&apikey={API_KEY}'
@@ -67,7 +67,7 @@ def predict_real_time(df, model):
     prediction = model.predict(X_real_time)
     return prediction
 
-# Streamlit UI
+# Using Streamlit UI
 st.title('Real-Time Stock Market Analysis')
 
 symbol = st.text_input('Enter Stock Symbol', 'AAPL')
@@ -81,25 +81,25 @@ if symbol:
         
         st.write(f'Real-Time Prediction for {symbol}: {prediction[0]}')
         
-        # Plot Close Price
+        # Plotting Close Price
         fig_price = px.line(processed_data, x=processed_data.index, y='Close', title=f'Price of {symbol}')
         st.plotly_chart(fig_price)
 
-        # Plot SMA
+        # Plotting SMA
         fig_sma_10 = px.line(processed_data, x=processed_data.index, y='SMA_10', title=f'SMA 10 for {symbol}')
         st.plotly_chart(fig_sma_10)
 
         fig_sma_50 = px.line(processed_data, x=processed_data.index, y='SMA_50', title=f'SMA 50 for {symbol}')
         st.plotly_chart(fig_sma_50)
 
-        # Plot EMA
+        # Plotting EMA
         fig_ema_10 = px.line(processed_data, x=processed_data.index, y='EMA_10', title=f'EMA 10 for {symbol}')
         st.plotly_chart(fig_ema_10)
 
         fig_ema_50 = px.line(processed_data, x=processed_data.index, y='EMA_50', title=f'EMA 50 for {symbol}')
         st.plotly_chart(fig_ema_50)
 
-        # Plot Bollinger Bands
+        # Plotting Bollinger Bands
         fig_bollinger = go.Figure()
         fig_bollinger.add_trace(go.Scatter(x=processed_data.index, y=processed_data['Close'], mode='lines', name='Close'))
         fig_bollinger.add_trace(go.Scatter(x=processed_data.index, y=processed_data['Bollinger_High'], mode='lines', name='Bollinger High', line=dict(dash='dash')))
@@ -107,15 +107,15 @@ if symbol:
         fig_bollinger.update_layout(title=f'Bollinger Bands for {symbol}')
         st.plotly_chart(fig_bollinger)
 
-        # Plot RSI
+        # Plotting RSI
         fig_rsi = px.line(processed_data, x=processed_data.index, y='RSI', title=f'RSI for {symbol}')
         st.plotly_chart(fig_rsi)
 
-        # Plot Volume
+        # Plotting Volume
         fig_volume = px.bar(processed_data, x=processed_data.index, y='Volume', title=f'Trading Volume for {symbol}')
         st.plotly_chart(fig_volume)
 
-        # Plot feature correlations
+        # Plotting feature correlations
         corr_matrix = processed_data[['Open', 'High', 'Low', 'Volume', 'SMA_10', 'SMA_20', 'SMA_50', 'EMA_10', 'EMA_50', 'Volatility', 'Pct_Change', 'RSI']].corr()
         fig_corr = px.imshow(corr_matrix, text_auto=True, title=f'Feature Correlation Matrix for {symbol}')
         st.plotly_chart(fig_corr)
